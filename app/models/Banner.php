@@ -76,16 +76,27 @@ class Banner extends Model{
                                                     'image' => $image_name,
                                                     'id' => $banner_id
                         ));
+
                         $this->base64_to_jpeg($params['image'], DOCUMENT_ROOT.$image_name);
+
+                        $res_banners = $this->db->query("SELECT id FROM `banners` WHERE user_id=:user_id ORDER BY sort ASC", array('user_id' => $user->user_id));
+                        foreach ($res_banners as $index => $banner){
+                            echo ($index + 1).'<br>';
+                            $this->db->query("UPDATE `banners` SET `sort`=:sort WHERE id=:id", array('id' => $banner['id'], 'sort' => ($index + 1)));
+                        }
+
                         return array('success' => 1, 'id' => $banner_id);
                     } else {
                         return array('error' => 'Access denied');
                     }
                 } else {
+
                     $this->db->query("UPDATE `banners` SET `sort`=sort + 1 WHERE sort >= :sort AND user_id=:user_id",
                         array('sort' => $params['sort'], 'user_id' => $user->user_id));
 
                     $image_name = '/files/banner_imgs/'.preg_replace("/[^a-zA-ZА-Яа-я0-9\s]/", "",crypt($params['name'])).'.jpeg';
+
+
 
                     $this->db->query("INSERT INTO `banners`(`user_id`, `timestamp`, `name`, `url`, `state`, `sort`, `image`, `params`) 
                                       VALUES (
@@ -109,6 +120,12 @@ class Banner extends Model{
                     ));
 
                     $this->base64_to_jpeg($params['image'], DOCUMENT_ROOT.$image_name);
+
+                    $res_banners = $this->db->query("SELECT id FROM `banners` WHERE user_id=:user_id ORDER BY sort ASC", array('user_id' => $user->user_id));
+                    foreach ($res_banners as $index => $banner){
+                        echo ($index + 1).'<br>';
+                        $this->db->query("UPDATE `banners` SET `sort`=:sort WHERE id=:id", array('id' => $banner['id'], 'sort' => ($index + 1)));
+                    }
 
                     return array('success' => 1, 'id' => $this->db->lastInsertId());
                 }
@@ -163,7 +180,6 @@ class Banner extends Model{
             }
 
             $this->db->query("DELETE FROM `banners` WHERE id=:id", array('id' => $id));
-
 
             $res_banners = $this->db->query("SELECT id FROM `banners` WHERE user_id=:user_id ORDER BY sort ASC", array('user_id' => $user->user_id));
             foreach ($res_banners as $index => $banner){
