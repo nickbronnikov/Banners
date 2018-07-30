@@ -9,7 +9,11 @@ class Route
     }
     static function getUrlSegment($index){
         $routes = explode('/', $_SERVER['REQUEST_URI']);
-        return $routes[$index];
+        if(isset($routes[$index])){
+            return $routes[$index];
+        } else {
+            return false;
+        }
     }
 
     static function setLocalisation()

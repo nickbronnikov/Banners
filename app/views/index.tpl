@@ -50,7 +50,7 @@
 
             <!-- Copyright -->
             <div class="footer-copyright text-center py-3">
-                <a href="/"><i class="fa fa-github"></i></a>
+                <a href="https://github.com/nickbronnikov/Banners"><i class="fa fa-github"></i></a>
             </div>
             <!-- Copyright -->
 

@@ -8,6 +8,7 @@ class View
     function __construct()
     {
         $this->smarty = new Smarty;
+        $this->smarty->error_reporting = E_ALL & ~E_NOTICE;
         $this->smarty->setCompileDir(DOCUMENT_ROOT.'/temp/template_c/');
     }
 
