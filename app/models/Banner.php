@@ -81,7 +81,6 @@ class Banner extends Model{
 
                         $res_banners = $this->db->query("SELECT id FROM `banners` WHERE user_id=:user_id ORDER BY sort ASC", array('user_id' => $user->user_id));
                         foreach ($res_banners as $index => $banner){
-                            echo ($index + 1).'<br>';
                             $this->db->query("UPDATE `banners` SET `sort`=:sort WHERE id=:id", array('id' => $banner['id'], 'sort' => ($index + 1)));
                         }
 
